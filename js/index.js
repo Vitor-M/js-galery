@@ -1,4 +1,5 @@
 let sideMenuBtn = document.querySelector(".side-menu__button--hamburguer");
+let gallery = document.querySelector(".gallery");
 
 sideMenuBtn.addEventListener("click", () => {
   let sideMenu = document.querySelector(".side-menu");
@@ -10,5 +11,23 @@ sideMenuBtn.addEventListener("click", () => {
   }else{
     sideMenu.classList.add("closed");
     btnImg.src = "./assets/closed-menu.svg"
+  }
+});
+
+gallery.addEventListener("dblclick", (e)=>{
+  clickCounter = 0;
+  let evenTarget = e.target;
+  if(evenTarget.classList.contains("item__image")){
+    
+    function likeCheck(){
+      let likeImg = evenTarget.previousElementSibling;
+      if(likeImg != null && likeImg.classList.contains("item__like")){
+        if(likeImg.classList.contains("hidden"))
+          likeImg.classList.remove("hidden");
+        else
+          likeImg.classList.add("hidden");
+      }
+    }
+    likeCheck()
   }
 });
