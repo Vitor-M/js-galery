@@ -3,6 +3,7 @@ let gallery = document.querySelector(".gallery");
 let modal = document.querySelector(".modal");
 let modalImg = modal.querySelector(".modal__image");
 let modalImgLike = modal.querySelector(".modal__like");
+let images = document.querySelectorAll(".item__image");
 
 sideMenuBtn.addEventListener("click", () => {
   let sideMenu = document.querySelector(".side-menu");
@@ -18,20 +19,20 @@ sideMenuBtn.addEventListener("click", () => {
 });
 
 let clickCounter = 0
-gallery.addEventListener("click", (e)=>{
-  if(e.target.classList.contains("item__image")){
+images.forEach(img =>{
+  img.addEventListener("click", ()=>{
     clickCounter++;
     if(clickCounter === 1) {
       clickerTime = setTimeout(() => {
         clickCounter = 0;
-        modalHandler(e.target);
+        modalHandler(img);
       }, 400);
     } else if(clickCounter === 2) {
       clearTimeout(clickerTime);
       clickCounter = 0;
-      likeHandler(e.target);
+      likeHandler(img);
     }
-  }
+  });
 });
 
 function modalHandler(img) {
