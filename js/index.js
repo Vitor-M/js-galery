@@ -31,3 +31,15 @@ gallery.addEventListener("dblclick", (e)=>{
     likeCheck()
   }
 });
+
+// Modal Handler
+gallery.addEventListener("click", (e)=>{
+  let evenTarget = e.target;
+  if(evenTarget.classList.contains("item__image")){
+    let modal = document.querySelector(".modal");
+      if(modal.classList.contains("hidden")){
+        modal.classList.remove("hidden")
+        modal.querySelector(".modal__image").src = evenTarget.src;
+      }
+    }
+});
