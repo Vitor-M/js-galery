@@ -3,6 +3,7 @@ let gallery = document.querySelector(".gallery");
 let modal = document.querySelector(".modal");
 let modalImg = modal.querySelector(".modal__image");
 let modalImgLike = modal.querySelector(".modal__like");
+let modalCloseBtn =  modal.querySelector(".modal__button.close");
 let images = document.querySelectorAll(".item__image");
 
 sideMenuBtn.addEventListener("click", () => {
@@ -31,6 +32,24 @@ images.forEach(img =>{
       clearTimeout(clickerTime);
       clickCounter = 0;
       likeHandler(img);
+    }
+  });
+});
+
+modalCloseBtn.addEventListener("click", () =>{
+    modal.classList.add("hidden");
+    modalImg.src = "";
+    modalImgLike.classList.add("hidden");
+});
+
+modalImg.addEventListener("dblclick", () =>{
+  images.forEach(img => {
+    if(img.src == modalImg.src){
+      likeHandler(img);
+      if(modalImgLike.classList.contains("hidden"))
+        modalImgLike.classList.remove("hidden");
+      else
+        modalImgLike.classList.add("hidden");
     }
   });
 });
