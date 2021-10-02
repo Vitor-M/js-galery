@@ -1,3 +1,5 @@
+
+// Global Variables
 let sideMenuBtn = document.querySelector(".side-menu__button--hamburguer");
 let images = document.querySelectorAll(".item__image");
 let modal = document.querySelector(".modal");
@@ -7,6 +9,9 @@ let modalPrevious = modal.querySelector(".modal__button.previous");
 let modalNext = modal.querySelector(".modal__button.next");
 let selectedImg = null
 
+
+// SideBar focus controller
+// Closes or opens the Side Menu (Depending on Side Menu state) when the sidebar icon is clicked
 sideMenuBtn.addEventListener("click", () => {
   let sideMenu = document.querySelector(".side-menu");
   let btnImg = sideMenuBtn.querySelector(".side-menu__icon");
@@ -20,6 +25,10 @@ sideMenuBtn.addEventListener("click", () => {
   }
 });
 
+//Gallery Images Controller
+//Checks if a single or double click event was called from an image gallery.
+//    If the event is a single click, then modal will open.
+//    If the event is a double click the like icon will appear.
 let clickCounter = 0
 images.forEach(img =>{
   img.addEventListener("click", ()=>{
@@ -37,6 +46,7 @@ images.forEach(img =>{
   });
 });
 
+//Closes the modal, if it's open and the user clicks over modal close button or modal fade
 modal.addEventListener("click", (e) =>{
     if(e.target.classList.contains("modal") || e.target.parentNode.classList.contains("close") ) {
       modal.classList.add("hidden");
@@ -46,6 +56,7 @@ modal.addEventListener("click", (e) =>{
     }
 });
 
+//Shows the image like icon when the modal image is doubleclicked
 modalImg.addEventListener("dblclick", () =>{
   likeHandler(selectedImg);
   if(modalImgLike.classList.contains("hidden"))
@@ -54,6 +65,7 @@ modalImg.addEventListener("dblclick", () =>{
     modalImgLike.classList.add("hidden");
 });
 
+//Shows modal
 function openModal(img) {
   if(modal.classList.contains("hidden")){
     modal.classList.remove("hidden");
@@ -61,6 +73,11 @@ function openModal(img) {
   }
 }
 
+//Update modal
+//Puts the correspondent gallery image into modal image
+//Verifies and sets the modal image like icon if the gallery image has like
+//Verifies and hidden the modal arrows if there is more images after and/or before the actual modal image
+//Set the actual modal image
 function updateModal(img) {
   modalImg.src = img.src;
   if(isLiked(img)) 
@@ -71,6 +88,8 @@ function updateModal(img) {
   arrowsHandler(img);
 }
 
+//Verifies if the gallery image has like
+//Returns a boolean (true/false)
 function isLiked(img) {
   let likeImg = img.parentNode.querySelector(".item__like");
   if(likeImg != null){
@@ -91,16 +110,19 @@ function likeHandler(img) {
   }
 }
 
+//Updates modal with next gallery image info
 modalNext.addEventListener("click",() =>{
   let nextImg = selectedImg.parentNode.nextElementSibling.querySelector(".item__image");
   updateModal(nextImg);
 });
 
+//Updates modal with previous gallery image info
 modalPrevious.addEventListener("click",() =>{
   let previousImg = selectedImg.parentNode.previousElementSibling.querySelector(".item__image");
   updateModal(previousImg);
 });
 
+//Shows/hidden the modal arrow if ther is a image next/back the current modal image 
 function arrowsHandler(img) {
   let card = img.parentNode;
   if(card.previousElementSibling == null)
