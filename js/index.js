@@ -1,10 +1,11 @@
 let sideMenuBtn = document.querySelector(".side-menu__button--hamburguer");
-let gallery = document.querySelector(".gallery");
+let images = document.querySelectorAll(".item__image");
 let modal = document.querySelector(".modal");
 let modalImg = modal.querySelector(".modal__image");
 let modalImgLike = modal.querySelector(".modal__like");
-let modalCloseBtn =  modal.querySelector(".modal__button.close");
-let images = document.querySelectorAll(".item__image");
+let modalPrevious = modal.querySelector(".modal__button.previous");
+let modalNext = modal.querySelector(".modal__button.next");
+let selectedImg = null
 
 sideMenuBtn.addEventListener("click", () => {
   let sideMenu = document.querySelector(".side-menu");
@@ -26,7 +27,7 @@ images.forEach(img =>{
     if(clickCounter === 1) {
       clickerTime = setTimeout(() => {
         clickCounter = 0;
-        modalHandler(img);
+        openModal(img);
       }, 400);
     } else if(clickCounter === 2) {
       clearTimeout(clickerTime);
@@ -36,31 +37,38 @@ images.forEach(img =>{
   });
 });
 
-modalCloseBtn.addEventListener("click", () =>{
-    modal.classList.add("hidden");
-    modalImg.src = "";
-    modalImgLike.classList.add("hidden");
+modal.addEventListener("click", (e) =>{
+    if(e.target.classList.contains("modal") || e.target.parentNode.classList.contains("close") ) {
+      modal.classList.add("hidden");
+      modalImg.removeAttribute("src");
+      modalImgLike.classList.add("hidden");
+      selectedImg = null;
+    }
 });
 
 modalImg.addEventListener("dblclick", () =>{
-  images.forEach(img => {
-    if(img.src == modalImg.src){
-      likeHandler(img);
-      if(modalImgLike.classList.contains("hidden"))
-        modalImgLike.classList.remove("hidden");
-      else
-        modalImgLike.classList.add("hidden");
-    }
-  });
+  likeHandler(selectedImg);
+  if(modalImgLike.classList.contains("hidden"))
+    modalImgLike.classList.remove("hidden");
+  else
+    modalImgLike.classList.add("hidden");
 });
 
-function modalHandler(img) {
+function openModal(img) {
   if(modal.classList.contains("hidden")){
     modal.classList.remove("hidden");
-    modalImg.src = img.src;
-    if(isLiked(img)) 
-    modalImgLike.classList.remove("hidden");
+    updateModal(img);
   }
+}
+
+function updateModal(img) {
+  modalImg.src = img.src;
+  if(isLiked(img)) 
+    modalImgLike.classList.remove("hidden");
+  else
+    modalImgLike.classList.add("hidden");
+  selectedImg = img;
+  arrowsHandler(img);
 }
 
 function isLiked(img) {
@@ -81,4 +89,28 @@ function likeHandler(img) {
     else
       likeImg.classList.add("hidden");
   }
+}
+
+modalNext.addEventListener("click",() =>{
+  let nextImg = selectedImg.parentNode.nextElementSibling.querySelector(".item__image");
+  updateModal(nextImg);
+});
+
+modalPrevious.addEventListener("click",() =>{
+  let previousImg = selectedImg.parentNode.previousElementSibling.querySelector(".item__image");
+  updateModal(previousImg);
+});
+
+function arrowsHandler(img) {
+  let card = img.parentNode;
+  if(card.previousElementSibling == null)
+    modalPrevious.style.display = "none";
+  else
+    modalPrevious.style.display = "block";
+  
+  if(card.nextElementSibling == null)
+    modalNext.style.display = "none";
+  else
+    modalNext.style.display = "block";
+
 }
